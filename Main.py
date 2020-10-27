@@ -21,11 +21,11 @@ while True:
 			if event.button == 4:
 				if len(messages) > 0:
 					for message in messages:
-						message.y -= 20
+						message.y += 20
 			if event.button == 5:
 				if len(messages) > 0:
 					for message in messages:
-						message.y += 20
+						message.y -= 20
 		entry_field.update(event)
 		submit_button.update(event)
 	if len(messages) > 0:
