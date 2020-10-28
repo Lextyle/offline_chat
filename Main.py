@@ -66,8 +66,10 @@ while True:
 				for line in entry_field.lines:
 					line_render = font.render(line, True, (200, 200, 200))
 					line_widths.append(line_render.get_width())
+				last_message_height = messages[edit[1]].height
 				messages[edit[1]].width = max(line_widths)
 				messages[edit[1]].height = letter_example.get_height() * len(entry_field.lines)
+				present_message_height = messages[edit[1]].height
 				messages[edit[1]].message = pygame.Surface((messages[edit[1]].width, messages[edit[1]].height))
 				messages[edit[1]].message.fill((30, 30, 30))
 				y = 0
@@ -75,6 +77,14 @@ while True:
 					line_render = font.render(line, True, (200, 200, 200))
 					messages[edit[1]].message.blit(line_render, (0, y))
 					y += line_render.get_height()
+				for message in messages:
+					message.y -= present_message_height - last_message_height
+					if messages.index(message) == edit[1]:
+						break
+				for edit_button in edit_buttons:
+					edit_button.y -= present_message_height - last_message_height
+					if edit_buttons.index(edit_button) == edit[1]:
+						break
 				edit_buttons[edit[1]].x = messages[edit[1]].x + messages[edit[1]].width + 5
 				edit_buttons[edit[1]].y = (messages[edit[1]].y + messages[edit[1]].height // 2) - edit_button_image.get_height() // 2
 				edit = [False, 0]
