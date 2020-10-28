@@ -12,7 +12,7 @@ class EntryField():
 		self.height = height
 		self.color = color
 		self.font = font
-		self.letter_example = self.font.render("Q", True, (200, 200, 200))
+		self.letter_example = self.font.render("f", True, (200, 200, 200))
 		self.lines = [""]
 		self.max_lines = max_lines
 		self.time_1 = int(time())
