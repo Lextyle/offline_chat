@@ -67,13 +67,14 @@ while True:
 					line_render = font.render(line, True, (200, 200, 200))
 					line_widths.append(line_render.get_width())
 				last_message_height = messages[edit[1]].height
+				messages[edit[1]].lines = entry_field.lines
 				messages[edit[1]].width = max(line_widths)
 				messages[edit[1]].height = letter_example.get_height() * len(entry_field.lines)
 				present_message_height = messages[edit[1]].height
 				messages[edit[1]].message = pygame.Surface((messages[edit[1]].width, messages[edit[1]].height))
 				messages[edit[1]].message.fill((30, 30, 30))
 				y = 0
-				for line in entry_field.lines:
+				for line in messages[edit[1]].lines:
 					line_render = font.render(line, True, (200, 200, 200))
 					messages[edit[1]].message.blit(line_render, (0, y))
 					y += line_render.get_height()
