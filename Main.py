@@ -13,7 +13,9 @@ entry_field = EntryField(0, window_height - letter_example.get_height(), window_
 messages = []
 submit_button = Button(window_width - 40, window_height - 40, pygame.transform.scale(pygame.image.load("submit_button_image.png"), (40, 40)), pygame.transform.scale(pygame.image.load("submit_button_image.png"), (40, 40)))
 edit_buttons = []
+remove_buttons = []
 edit_button_image = pygame.image.load("edit_button_image.png")
+remove_button_image = pygame.image.load("remove_button_image.png")
 edit = [False, 0]
 while True:
 	window.fill((60, 60, 60))
@@ -35,13 +37,26 @@ while True:
 			edit_button.update(event)
 			if edit_button.pressed:
 				edit = [True, edit_buttons.index(edit_button)]
-				for edit_button_2 in edit_buttons:
-					if edit_button_2 != edit_button:
-						edit_button_2.pressed = False
 				entry_field.lines = messages[edit[1]].lines
 				entry_field.height = len(messages[edit[1]].lines) * letter_example.get_height()
 				entry_field.y = window_height - entry_field.height
 				break
+		for remove_button in remove_buttons:
+			remove_button.update(event)
+			if remove_button.pressed:
+				index = remove_buttons.index(remove_button)
+				if edit == [True, index]:
+					edit = [False, 0]
+					entry_field.height = letter_example.get_height()
+					entry_field.y = window_height - entry_field.height
+					entry_field.lines = [""]
+				for message in messages:
+					if messages.index(message) == index:
+						break
+					message.y += messages[index].height + 10
+				messages.pop(index)
+				edit_buttons.pop(index)
+				remove_buttons.pop(index)
 	if len(messages) > 0:
 		if messages[0].y > 10:
 			difference = messages[0].y - 10
@@ -85,7 +100,8 @@ while True:
 				else:
 					messages.append(Message(10, (window_height - letter_example.get_height()) - 10, entry_field.lines, font))
 					messages[-1].y -= messages[-1].height
-				edit_buttons.append(Button(messages[-1].x + messages[-1].width + 5, (messages[-1].y + messages[-1].height // 2) - edit_button_image.get_height() // 2, edit_button_image, edit_button_image))
+				edit_buttons.append(Button(0, 0, edit_button_image, edit_button_image))
+				remove_buttons.append(Button(0, 0, remove_button_image, remove_button_image))
 			entry_field.lines = [""]
 			entry_field.height = letter_example.get_height()
 			entry_field.y = window_height - letter_example.get_height()
@@ -96,6 +112,11 @@ while True:
 		edit_button.x = messages[index].x + messages[index].width + 5
 		edit_button.y = (messages[index].y + messages[index].height // 2) - edit_button_image.get_height() // 2
 		edit_button.draw(window)
+	for remove_button in remove_buttons:
+		index = remove_buttons.index(remove_button)
+		remove_button.x = edit_buttons[index].x + edit_buttons[index].image.get_width() + 5
+		remove_button.y = edit_buttons[index].y
+		remove_button.draw(window)
 	entry_field.draw(window)
 	submit_button.draw(window)
 	pygame.display.flip()
