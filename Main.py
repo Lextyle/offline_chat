@@ -25,14 +25,10 @@ while True:
 				if len(messages) > 0:
 					for message in messages:
 						message.y += 20
-					for edit_button in edit_buttons:
-						edit_button.y += 20
 			if event.button == 5:
 				if len(messages) > 0:
 					for message in messages:
 						message.y -= 20
-					for edit_button in edit_buttons:
-						edit_button.y -= 20
 		entry_field.update(event)
 		submit_button.update(event)
 		for edit_button in edit_buttons:
@@ -51,14 +47,10 @@ while True:
 			difference = messages[0].y - 10
 			for message in messages:
 				message.y -= difference
-			for edit_button in edit_buttons:
-				edit_button.y -= difference
 		if messages[-1].y + messages[-1].height < (window_height - letter_example.get_height()) - 10:
 			difference = ((window_height - letter_example.get_height()) - 10) - (messages[-1].y + messages[-1].height)
 			for message in messages:
 				message.y += difference
-			for edit_button in edit_buttons:
-				edit_button.y += difference
 	if submit_button.pressed:
 		if not "" in entry_field.lines:
 			if edit[0]:
@@ -82,12 +74,6 @@ while True:
 					message.y -= present_message_height - last_message_height
 					if messages.index(message) == edit[1]:
 						break
-				for edit_button in edit_buttons:
-					edit_button.y -= present_message_height - last_message_height
-					if edit_buttons.index(edit_button) == edit[1]:
-						break
-				edit_buttons[edit[1]].x = messages[edit[1]].x + messages[edit[1]].width + 5
-				edit_buttons[edit[1]].y = (messages[edit[1]].y + messages[edit[1]].height // 2) - edit_button_image.get_height() // 2
 				edit = [False, 0]
 			else:
 				if len(messages) != 0:
@@ -96,8 +82,6 @@ while True:
 						difference = ((messages[-1].y + messages[-1].height) - (window_height - letter_example.get_height())) + 10
 						for message in messages:
 							message.y -= difference 
-						for edit_button in edit_buttons:
-							edit_button.y -= difference
 				else:
 					messages.append(Message(10, (window_height - letter_example.get_height()) - 10, entry_field.lines, font))
 					messages[-1].y -= messages[-1].height
@@ -108,7 +92,10 @@ while True:
 	for message in messages:
 		message.draw(window)
 	for edit_button in edit_buttons:
+		index = edit_buttons.index(edit_button)
+		edit_button.x = messages[index].x + messages[index].width + 5
+		edit_button.y = (messages[index].y + messages[index].height // 2) - edit_button_image.get_height() // 2
 		edit_button.draw(window)
 	entry_field.draw(window)
 	submit_button.draw(window)
-	pygame.display.update()
+	pygame.display.flip()
